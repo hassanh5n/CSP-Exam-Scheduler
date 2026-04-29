@@ -12,8 +12,7 @@ from ortools.sat.python import cp_model
 from data import EXAMS, ROOMS, TIME_SLOTS, MIN_GAP, SLOTS_PER_DAY
 
 
-# ─────────────────────────── Conflict Detection ───────────────────────────
-
+#Conflict Detection
 def find_conflicts(exams):
     """Build conflict graph: pairs of exams sharing sections or teachers."""
     section_conflicts = []
@@ -63,7 +62,7 @@ def count_days(n_slots):
     return max(1, (n_slots + SLOTS_PER_DAY - 1) // SLOTS_PER_DAY)
 
 
-# ─────────────────────────── OR-Tools Solver ──────────────────────────────
+#OR-Tools Solver
 
 def solve_with_ortools(exams=None, rooms=None, time_slots=None, min_gap=None):
     """Solve the exam timetabling CSP using OR-Tools CP-SAT solver."""
@@ -131,8 +130,8 @@ def solve_with_ortools(exams=None, rooms=None, time_slots=None, min_gap=None):
         model.AddAbsEquality(slot_distance, slot_vars[i] - slot_vars[j])
         model.Add(slot_distance >= required_gap).OnlyEnforceIf(same_day)
 
-    # Constraint 3: At most 2 exams per day for each student section
-    # This ensures no student has more than 2 exams on the same day
+    #Constraint 3: At most 2 exams per day for each student section
+    #no student has more than 2 exams on the same day
     section_to_exams = {}
     for exam_id, exam in enumerate(exams):
         for sec in exam["sections"]:
@@ -140,7 +139,7 @@ def solve_with_ortools(exams=None, rooms=None, time_slots=None, min_gap=None):
 
     for sec, exam_ids in section_to_exams.items():
         if len(exam_ids) <= 2:
-            # With 2 or fewer exams, just ensure different slots (already done)
+            # With 2 or fewer exams, different slots (already done)
             continue
         # For each day, at most 2 exams from this section
         for day in range(n_days):
@@ -152,7 +151,7 @@ def solve_with_ortools(exams=None, rooms=None, time_slots=None, min_gap=None):
                 day_bools.append(b)
             model.Add(sum(day_bools) <= 2)
 
-    # Objective: prefer tight room fits, earlier daily slots, and balanced day loads.
+    #prefer tight room fits, earlier daily slots, and balanced day loads.
     room_capacities = [room_capacity(room) for room in rooms]
     max_room_capacity = max(room_capacities)
     room_waste_vars = []
@@ -195,8 +194,7 @@ def solve_with_ortools(exams=None, rooms=None, time_slots=None, min_gap=None):
     objective_terms.append(day_imbalance * 20)
     model.Minimize(sum(objective_terms))
 
-    # Constraint 4: Teacher conflict — different time slots
-    # Solve
+    #Teacher conflict, different time slots
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = 30
     solver.parameters.num_search_workers = min(8, os.cpu_count() or 1)
@@ -233,8 +231,7 @@ def solve_with_ortools(exams=None, rooms=None, time_slots=None, min_gap=None):
         return {"status": "infeasible", "solve_time": solve_time}
 
 
-# ────────────────────── Backtracking Solver (Visualization) ───────────────
-
+#Backtracking Solver (Visualization)
 def solve_with_backtracking(exams=None, rooms=None, time_slots=None, min_gap=None):
     """
     Custom backtracking CSP solver that records every step for UI visualization.
