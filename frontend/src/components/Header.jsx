@@ -40,7 +40,7 @@ export default function Header({ onSolveOrTools, onSolveBacktrack, loading, them
           color: 'var(--text-dim)',
           marginTop: 8,
         }}>
-          powered by Google OR-Tools
+          Made with OR-Tools
         </div>
       </div>
 

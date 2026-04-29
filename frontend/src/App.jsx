@@ -5,6 +5,7 @@ import TimetableGrid from './components/TimetableGrid.jsx';
 import Visualization from './components/Visualization.jsx';
 import ConflictPanel from './components/ConflictPanel.jsx';
 import DataPanel from './components/DataPanel.jsx';
+import ConstraintGraph from './components/ConstraintGraph.jsx';
 import { fetchData, solveOrTools, solveBacktrack } from './utils/api.js';
 
 export default function App() {
@@ -74,10 +75,11 @@ export default function App() {
   };
 
   const tabs = [
-    { id: 'timetable', label: 'Schedule' },
-    { id: 'visualization', label: 'CSP Trace' },
-    { id: 'conflicts', label: 'Constraints' },
-    { id: 'data', label: 'Input Data' },
+    { id: 'timetable',     label: 'Schedule'   },
+    { id: 'visualization', label: 'CSP Trace'  },
+    { id: 'graph',         label: 'CSP Graph'  },
+    { id: 'conflicts',     label: 'Constraints'},
+    { id: 'data',          label: 'Input Data' },
   ];
 
   return (
@@ -129,10 +131,11 @@ export default function App() {
       </div>
 
       <div className="animate-in delay-3">
-        {activeTab === 'timetable' && <TimetableGrid schedule={schedule} data={data} />}
+        {activeTab === 'timetable'     && <TimetableGrid schedule={schedule} data={data} />}
         {activeTab === 'visualization' && <Visualization steps={vizSteps} data={data} schedule={schedule} />}
-        {activeTab === 'conflicts' && <ConflictPanel data={data} />}
-        {activeTab === 'data' && (
+        {activeTab === 'graph'         && <ConstraintGraph data={data} schedule={schedule} />}
+        {activeTab === 'conflicts'     && <ConflictPanel data={data} />}
+        {activeTab === 'data'          && (
           <DataPanel
             data={data}
             onDataChange={() => fetchData().then(setData).catch(() => {})}

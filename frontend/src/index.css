@@ -48,7 +48,10 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   background: var(--bg-void);
   color: var(--text-bright);
   min-height: 100vh;
@@ -269,7 +272,7 @@ body::after {
 }
 .exam-chip-title {
   font-weight: 600;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .exam-chip-meta {
   font-family: 'Fira Code', monospace;

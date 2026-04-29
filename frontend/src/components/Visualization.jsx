@@ -129,7 +129,7 @@ export default function Visualization({ steps, data, schedule }) {
                 fontSize: '0.72rem', transition: 'all 0.25s ease',
               }}>
                 <div style={{
-                  fontWeight: 600, fontFamily: "'Syne', sans-serif",
+                  fontWeight: 600, fontFamily: "'Poppins', sans-serif",
                   color: isAssigned ? 'var(--green)' : isCurrent ? 'var(--amber)' : 'var(--text-body)',
                   marginBottom: 1,
                 }}>
